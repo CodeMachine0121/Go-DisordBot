@@ -13,12 +13,11 @@ func Start() {
 	goBot, _ = discordgo.New("Bot " + botHandlers.BotConfig.Token)
 
 	goBot.AddHandler(botHandlers.MessageHandler)
-	goBot.AddHandler(botHandlers.MessageHandler)
+	//goBot.AddHandler(botHandlers.NetworkHandler)
 
 	err := goBot.Open()
 	if err != nil {
 		log.Fatal("something error in enabling discord bot")
 	}
-
 	log.Println("Start Discord Bot")
 }

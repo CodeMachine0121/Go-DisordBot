@@ -1,7 +1,7 @@
 package main
 
 import (
-	"golang-discord-bot/BotHandlers/DiscordBot"
+	"golang-discord-bot/BotsController/DiscordBot"
 )
 
 func main() {

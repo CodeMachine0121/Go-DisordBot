@@ -6,5 +6,5 @@ import (
 
 func main() {
 	DiscordBot.Start()
-	DiscordBot.Stop()
+	<-make(chan struct{})
 }

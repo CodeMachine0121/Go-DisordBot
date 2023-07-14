@@ -1,7 +1,7 @@
 package Handlers
 
 import (
-	"golang-discord-bot/BotsController/GlobalSetting"
+	"golang-discord-bot/BotsController"
 	"log"
 	"strings"
 
@@ -14,7 +14,7 @@ func (bot BotHandlers) VoiceChannelHandler(session *discordgo.Session, message *
 	}
 
 	if strings.Contains(message.Content, "!join") {
-		voiceChannel, err := session.Channel(GlobalSetting.VoiceChannelId)
+		voiceChannel, err := session.Channel(BotsController.VoiceChannelId)
 		ErrorHandle(err)
 
 		// mute: false, deaf: true

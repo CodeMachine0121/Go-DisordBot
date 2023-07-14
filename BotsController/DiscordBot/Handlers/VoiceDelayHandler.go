@@ -2,7 +2,7 @@ package Handlers
 
 import (
 	"github.com/bwmarrin/discordgo"
-	"golang-discord-bot/BotsController/GlobalSetting"
+	"golang-discord-bot/BotsController"
 	"log"
 	"strings"
 	"time"
@@ -15,7 +15,7 @@ func (bot BotHandlers) VoiceDelayHandler(session *discordgo.Session, message *di
 		log.Println("Start Voice Delay Handling")
 
 		Start = time.Now()
-		_, err := session.ChannelMessageSend(GlobalSetting.VoiceChannelId, "!end")
+		_, err := session.ChannelMessageSend(BotsController.VoiceChannelId, "!end")
 		latency := time.Now().Sub(Start)
 		ErrorHandle(err)
 

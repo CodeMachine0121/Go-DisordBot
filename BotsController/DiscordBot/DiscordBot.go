@@ -10,11 +10,12 @@ import (
 var goBot *discordgo.Session
 
 func Start() {
-	botHandlers := Handlers.BotHandlers{BotConfig: ReadConfig()}
+	botHandlers := Handlers.BotHandlers{BotConfig: Handlers.ReadConfig()}
 	goBot, _ = discordgo.New("Bot " + botHandlers.BotConfig.Token)
 
 	// goBot.AddHandler(botHandlers.MessageHandler)
 	goBot.AddHandler(botHandlers.VoiceChannelHandler)
+	goBot.AddHandler(botHandlers.VoiceDelayHandler)
 
 	err := goBot.Open()
 	if err != nil {

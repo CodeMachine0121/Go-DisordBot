@@ -1,7 +1,6 @@
 package Handlers
 
 import (
-	"golang-discord-bot/BotsController/DiscordBot"
 	"strings"
 	"time"
 
@@ -16,12 +15,12 @@ func (bot BotHandlers) MessageHandler(session *discordgo.Session, messageCreate 
 	if strings.Contains(messageCreate.Content, bot.BotConfig.BotPrefix+"ping") {
 
 		_, err := session.ChannelMessageSend(messageCreate.ChannelID, "bot Testing ...")
-		DiscordBot.ErrorHandle(err)
+
+		ErrorHandle(err)
 
 		latencyMessage := "[+] Latency Rate: " + GetSessionLatencyRate(session) + "%"
 
 		_, err = session.ChannelMessageSend(messageCreate.ChannelID, latencyMessage)
-		DiscordBot.ErrorHandle(err)
 	}
 }
 

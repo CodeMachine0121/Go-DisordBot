@@ -2,24 +2,25 @@ package Handlers
 
 import (
 	"github.com/bwmarrin/discordgo"
-	"golang-discord-bot/BotsController/DiscordBot"
+	"golang-discord-bot/BotsController/GlobalSetting"
 	"log"
 	"strings"
 	"time"
 )
 
+var Start time.Time
+
 func (bot BotHandlers) VoiceDelayHandler(session *discordgo.Session, message *discordgo.MessageCreate) {
-
-	const VoiceChannelId string = "433651657214263327"
-
 	if strings.Contains(message.Content, "!latency") {
-		start := time.Now()
-		msg, err := session.ChannelMessageSend(VoiceChannelId, "Test")
-		DiscordBot.ErrorHandle(err)
+		log.Println("Start Voice Delay Handling")
 
-		if msg.ID == message.ID {
-			latency := time.Now().Sub(start)
-			log.Println("Voice Latency: ", latency)
-		}
+		Start = time.Now()
+		_, err := session.ChannelMessageSend(GlobalSetting.VoiceChannelId, "!end")
+		latency := time.Now().Sub(Start)
+		ErrorHandle(err)
+
+		log.Println("Voice Latency: ", latency)
+		_, err = session.ChannelMessageSend(message.ChannelID, "Voice Latency: "+latency.String())
+		ErrorHandle(err)
 	}
 }

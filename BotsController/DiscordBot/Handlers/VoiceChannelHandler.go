@@ -1,7 +1,7 @@
 package Handlers
 
 import (
-	"golang-discord-bot/BotsController/DiscordBot"
+	"golang-discord-bot/BotsController/GlobalSetting"
 	"log"
 	"strings"
 
@@ -13,17 +13,16 @@ func (bot BotHandlers) VoiceChannelHandler(session *discordgo.Session, message *
 		return
 	}
 
-	const VoiceChannelId string = "433651657214263327"
-
 	if strings.Contains(message.Content, "!join") {
-		voiceChannel, err := session.Channel(VoiceChannelId)
-		DiscordBot.ErrorHandle(err)
+		voiceChannel, err := session.Channel(GlobalSetting.VoiceChannelId)
+		ErrorHandle(err)
 
 		// mute: false, deaf: true
 		voiceConn, err := session.ChannelVoiceJoin(voiceChannel.GuildID, voiceChannel.ID, false, true)
-		DiscordBot.ErrorHandle(err)
+		ErrorHandle(err)
 
 		log.Println("Joined voice channel: ", voiceConn.ChannelID)
+
 	}
 
 }

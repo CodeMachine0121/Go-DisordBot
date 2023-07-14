@@ -1,10 +1,10 @@
 package DiscordBot
 
 import (
-	"github.com/bwmarrin/discordgo"
-	"log"
 	"strings"
 	"time"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 func (botHandlers BotHandlers) MessageHandler(session *discordgo.Session, messageCreate *discordgo.MessageCreate) {
@@ -28,11 +28,4 @@ func GetSessionLatencyRate(session *discordgo.Session) string {
 	duration := session.LastHeartbeatAck.Sub(session.LastHeartbeatSent)
 	latencyLimit := time.Second * 3
 	return (duration * 100 / latencyLimit).String()
-}
-
-func ErrorHandle(err error) {
-	if err != nil {
-		log.Fatal("something is error, pls contact support!")
-		return
-	}
 }

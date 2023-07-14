@@ -1,6 +1,7 @@
 package DiscordBot
 
 import (
+	"golang-discord-bot/BotsController/DiscordBot/Handlers"
 	"log"
 
 	"github.com/bwmarrin/discordgo"
@@ -9,7 +10,7 @@ import (
 var goBot *discordgo.Session
 
 func Start() {
-	botHandlers := BotHandlers{BotConfig: ReadConfig()}
+	botHandlers := Handlers.BotHandlers{BotConfig: ReadConfig()}
 	goBot, _ = discordgo.New("Bot " + botHandlers.BotConfig.Token)
 
 	// goBot.AddHandler(botHandlers.MessageHandler)
@@ -18,7 +19,6 @@ func Start() {
 	err := goBot.Open()
 	if err != nil {
 		log.Fatal(err)
-		log.Fatal("something error in enabling discord bot")
 	}
 	log.Println("Start Discord Bot")
 }

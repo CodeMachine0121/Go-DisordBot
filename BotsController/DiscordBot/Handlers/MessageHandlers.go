@@ -12,7 +12,7 @@ func (bot BotHandlers) MessageHandler(session *discordgo.Session, messageCreate 
 		return
 	}
 
-	if strings.Contains(messageCreate.Content, bot.BotConfig.BotPrefix+"ping") {
+	if strings.Contains(messageCreate.Content, "!ping") {
 
 		_, err := session.ChannelMessageSend(messageCreate.ChannelID, "bot Testing ...")
 

@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"os"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 type BotHandlers struct {
@@ -18,8 +20,7 @@ func ErrorHandle(err error) {
 }
 
 type Config struct {
-	Token     string
-	BotPrefix string
+	Token string
 }
 
 func ReadConfig() Config {
@@ -32,4 +33,10 @@ func ReadConfig() Config {
 		return Config{}
 	}
 	return config
+}
+
+func SendMessage(session *discordgo.Session, channelID string, message string) {
+	_, err := session.ChannelMessageSend(channelID, message)
+
+	ErrorHandle(err)
 }

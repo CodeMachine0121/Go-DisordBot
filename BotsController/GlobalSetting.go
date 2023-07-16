@@ -1,3 +1,3 @@
 package BotsController
 
-const VoiceChannelId string = "433651657214263327"
+const VoiceChannelId string = "417666232851103748"

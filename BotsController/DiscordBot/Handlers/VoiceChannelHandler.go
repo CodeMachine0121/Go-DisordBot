@@ -13,16 +13,10 @@ func (bot BotHandlers) VoiceChannelHandler(session *discordgo.Session, message *
 		return
 	}
 
-	if strings.Contains(message.Content, "!join") {
-		voiceChannel, err := session.Channel(BotsController.VoiceChannelId)
-		ErrorHandle(err)
-
-		// mute: false, deaf: true
-		voiceConn, err := session.ChannelVoiceJoin(voiceChannel.GuildID, voiceChannel.ID, false, true)
-		ErrorHandle(err)
-
-		log.Println("Joined voice channel: ", voiceConn.ChannelID)
-
+	if strings.Contains(message.Content, "!latency") {
+		log.Println("Start Voice Delay Handling")
+		commandChannel = message.ChannelID
+		SendMessage(session, BotsController.VoiceChannelId, "!start")
 	}
 
 }

@@ -4,6 +4,8 @@ import (
 	"log"
 	"os"
 
+	GlobalSetting "golang-discord-bot/BotsController/GlobalSetting"
+
 	"github.com/bwmarrin/discordgo"
 	"github.com/hashicorp/vault/api"
 )
@@ -25,24 +27,28 @@ type DiscordBotConfig struct {
 }
 
 func GetConfigWithToken(vaultToken string) DiscordBotConfig {
-	client, err := api.NewClient(&api.Config{
-		Address: "http://127.0.0.1:8200",
-	})
-	ErrorHandle(err)
-
-	client.SetToken(vaultToken)
-
-	secret, err := client.Logical().Read("secret/data/discordBot")
-	ErrorHandle(err)
+	secret := GetConnectionWithVault(vaultToken)
 
 	data := secret.Data["data"].(map[string]interface{})
 	for key, value := range data {
-		log.Println("key: ", key)
 		if key == "token" {
 			return DiscordBotConfig{Token: value.(string)}
 		}
 	}
 	return DiscordBotConfig{}
+}
+
+func GetConnectionWithVault(vaultToken string) *api.Secret {
+	client, err := api.NewClient(&api.Config{
+		Address: GlobalSetting.VaultAddress,
+	})
+	ErrorHandle(err)
+
+	client.SetToken(vaultToken)
+
+	secret, err := client.Logical().Read(GlobalSetting.VaultTokenPath)
+	ErrorHandle(err)
+	return secret
 }
 
 func GetVaultToken() string {

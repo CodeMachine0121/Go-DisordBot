@@ -1,7 +1,7 @@
 package Handlers
 
 import (
-	"golang-discord-bot/BotsController"
+	GlobalSetting "golang-discord-bot/BotsController/GlobalSetting"
 	"log"
 	"strings"
 
@@ -16,7 +16,7 @@ func (bot BotHandlers) VoiceChannelHandler(session *discordgo.Session, message *
 	if strings.Contains(message.Content, "!latency") {
 		log.Println("Start Voice Delay Handling")
 		commandChannel = message.ChannelID
-		SendMessage(session, BotsController.VoiceChannelId, "!start")
+		SendMessage(session, GlobalSetting.VoiceChannelId, "!start")
 	}
 
 }

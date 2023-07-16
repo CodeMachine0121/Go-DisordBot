@@ -33,8 +33,12 @@ func (bot BotHandlers) VoiceDelayHandler(session *discordgo.Session, message *di
 
 			if len(latencyList) == 10 {
 				averageLatency := CalculateAverageLatency(latencyList)
-				SendMessage(session, commandChannel, time.Now().GoString()+"  Average latency: "+averageLatency.String())
 				log.Println("Average latency: " + averageLatency.String())
+
+				if averageLatency > time.Second*2 {
+					log.Println("High Latency Alert!!!!!!  ", averageLatency)
+					SendMessage(session, commandChannel, "@everyone High Latency Alert!!!! : "+averageLatency.String())
+				}
 
 				// reset list
 				latencyList = make([]time.Duration, 0)

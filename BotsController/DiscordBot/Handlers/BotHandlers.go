@@ -1,42 +1,59 @@
 package Handlers
 
 import (
-	"encoding/json"
 	"log"
 	"os"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/hashicorp/vault/api"
 )
 
 type BotHandlers struct {
-	BotConfig Config
+	BotConfig DiscordBotConfig
 }
 
 func ErrorHandle(err error) {
 	if err != nil {
-		log.Fatal("something is error, pls contact support!")
+		log.Println("something is error, pls contact support!")
+		log.Fatal(err)
 		return
 	}
 }
 
-type Config struct {
+type DiscordBotConfig struct {
 	Token string
 }
 
-func ReadConfig() Config {
-	config := Config{}
+func GetConfigWithToken(vaultToken string) DiscordBotConfig {
+	client, err := api.NewClient(&api.Config{
+		Address: "http://127.0.0.1:8200",
+	})
+	ErrorHandle(err)
 
-	configFile, _ := os.ReadFile("./setting.json")
-	err := json.Unmarshal(configFile, &config)
+	client.SetToken(vaultToken)
 
-	if err != nil {
-		return Config{}
+	secret, err := client.Logical().Read("secret/data/discordBot")
+	ErrorHandle(err)
+
+	data := secret.Data["data"].(map[string]interface{})
+	for key, value := range data {
+		log.Println("key: ", key)
+		if key == "token" {
+			return DiscordBotConfig{Token: value.(string)}
+		}
 	}
-	return config
+	return DiscordBotConfig{}
+}
+
+func GetVaultToken() string {
+	vaultToken, err := os.ReadFile("./setting.json")
+	ErrorHandle(err)
+
+	log.Println("Get Vault Token: " + string(vaultToken))
+	return string(vaultToken)
 }
 
 func SendMessage(session *discordgo.Session, channelID string, message string) {
 	_, err := session.ChannelMessageSend(channelID, message)
-
 	ErrorHandle(err)
 }

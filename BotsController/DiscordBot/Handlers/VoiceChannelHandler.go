@@ -1,7 +1,7 @@
 package Handlers
 
 import (
-	GlobalSetting "golang-discord-bot/BotsController/GlobalSetting"
+	"golang-discord-bot/BotsController/GlobalSetting"
 	"log"
 	"strings"
 

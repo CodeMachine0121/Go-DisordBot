@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	GlobalSetting "golang-discord-bot/BotsController/GlobalSetting"
+	"golang-discord-bot/BotsController/GlobalSetting"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/hashicorp/vault/api"

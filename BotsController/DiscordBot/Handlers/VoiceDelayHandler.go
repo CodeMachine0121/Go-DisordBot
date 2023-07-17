@@ -25,16 +25,13 @@ func (bot BotHandlers) VoiceDelayHandler(session *discordgo.Session, message *di
 		log.Println("Start monitoring at ", time.Now())
 
 		bot.MonitoringLatency(session, latencyList)
-
 	}
 }
 
 func (BotHandlers) MonitoringLatency(session *discordgo.Session, latencyList []time.Duration) {
 	for index := 0; ; index++ {
-		latency := CalculateLatency(session)
-		latencyList = append(latencyList, latency)
+		latencyList = append(latencyList, CalculateLatency(session))
 
-		log.Println("Sent message latency: " + latency.String())
 		time.Sleep(5 * time.Second)
 
 		if IsLatencyListFull(latencyList) {
@@ -66,6 +63,8 @@ func CalculateLatency(session *discordgo.Session) time.Duration {
 	start = time.Now()
 	SendMessage(session, GlobalSetting.VoiceChannelId, "!testing")
 	latency := time.Since(start)
+
+	log.Println("Sent message latency: " + latency.String())
 	return latency
 }
 

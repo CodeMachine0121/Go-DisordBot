@@ -38,7 +38,7 @@ func (BotHandlers) MonitoringLatency(session *discordgo.Session, latencyList []t
 			averageLatency := MathLab.CalculateAverageLatency(latencyList)
 			log.Println("Average latency: " + averageLatency.String())
 
-			if IsAverageLatencyHigh(averageLatency) {
+			if IsAverageLatencyHigh(latencyList, averageLatency) {
 				log.Println("High Latency Alert!!!!!!  ", averageLatency)
 				SendMessage(session, commandChannel, "@everyone High Latency Alert!!!! : "+averageLatency.String())
 			}
@@ -51,8 +51,10 @@ func ResetLatencyList() []time.Duration {
 	return make([]time.Duration, 0)
 }
 
-func IsAverageLatencyHigh(averageLatency time.Duration) bool {
-	return averageLatency > GlobalSetting.HighLatencyThreshold
+func IsAverageLatencyHigh(latencyList []time.Duration, averageLatency time.Duration) bool {
+	varianceLatency := MathLab.CalculateStandardDeviationLatency(latencyList, averageLatency)
+	log.Println("Variance Latency: " + varianceLatency.String())
+	return varianceLatency > GlobalSetting.HighLatencyThreshold
 }
 
 func IsLatencyListFull(latencyList []time.Duration) bool {
